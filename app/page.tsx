@@ -9,6 +9,7 @@ const markup = fs.readFileSync(
   "utf8"
 );
 
+export default function Home() {
   return (
     <>
       <div
