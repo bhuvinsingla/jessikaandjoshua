@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-cream: #faf7f2;
+  --text-dark: #0f0f0f;
+  --card-night-bg: #0a0a0a;
+  --hero-bg-from: #ffffff;
+  --hero-bg-to: #faf7f2;
+  --accent-plum: #542344;
+  --accent-green: #042b1d;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+}
+
+.theme-night-bg {
+  background-color: var(--card-night-bg);
+}
+
+.hero-gradient-bg {
+  background: linear-gradient(to bottom, var(--hero-bg-from), var(--hero-bg-to));
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}

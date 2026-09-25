@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessika & Joshua — Our Wedding Celebration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Pinyon+Script&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cream: '#FAF7F2',
+                            creamDark: '#F2ECE1',
+                            dark: '#0F0F0F',
+                            onyx: '#0A0A0A',
+                            border: '#E2DCD2',
+                            plum: '#542344',
+                            plumLight: '#73335D',
+                            plumDark: '#3A152E',
+                            green: '#042B1D',
+                            greenLight: '#E8EFE9',
+                            sage: '#8FA88B'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        amp: ['"Pinyon Script"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-cream: #FAF7F2;
+            --text-dark: #0F0F0F;
+            --card-night-bg: #0A0A0A;
+            --hero-bg-from: #FFFFFF;
+            --hero-bg-to: #FAF7F2;
+            --accent-plum: #542344;
+            --accent-green: #042B1D;
+        }
+        
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+        }
+        .theme-night-bg {
+            background-color: var(--card-night-bg);
+        }
+        .hero-gradient-bg {
+            background: linear-gradient(to bottom, var(--hero-bg-from), var(--hero-bg-to));
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-brand-dark font-sans antialiased selection:bg-brand-plum selection:text-white min-h-screen">
+
+    <!-- Floating Couple Test Switcher -->
+    <div class="fixed bottom-4 right-4 z-50 bg-stone-950 text-white p-3 sm:p-4 rounded-2xl shadow-2xl border border-stone-800 max-w-xs backdrop-blur-md bg-opacity-95 text-xs">
+        <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="font-bold text-stone-300 uppercase tracking-wider text-[10px] flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-brand-green"></span> Preview Switcher
+            </span>
+            <span class="text-[10px] text-stone-400">Beta Mode</span>
+        </div>
+        <p class="text-[11px] text-stone-400 mb-2.5">Switch guest view to test personalized content:</p>
+        <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" id="tierBtnBoth" onclick="setGuestTier('both')" class="px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-stone-900 border-stone-800 text-stone-300 hover:text-white">Both Events</button>
+            <button type="button" id="tierBtnBrunch" onclick="setGuestTier('brunch')" class="px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-stone-900 border-stone-800 text-stone-300 hover:text-white">Brunch Only</button>
+            <button type="button" id="tierBtnNight" onclick="setGuestTier('night')" class="px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-stone-900 border-stone-800 text-stone-300 hover:text-white">Night Only</button>
+            <button type="button" id="tierBtnLocked" onclick="showPage('landing')" class="px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-brand-plum border-brand-plum text-white shadow-sm">Page 1 (Landing)</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PAGE 1: TITLE & GUEST LOOKUP LANDING PAGE  -->
+    <!-- ========================================== -->
+    <section id="pageLanding" class="min-h-screen flex flex-col justify-between items-center text-center px-4 py-12 hero-gradient-bg relative overflow-hidden">
+        <div class="my-auto max-w-2xl w-full">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700 text-xs font-semibold tracking-wider uppercase mb-8 shadow-sm">
+                <span class="w-0 h-0 rounded-full bg-brand-plum animate-pulse"></span>
+                January 30, 2027 • Houston, Texas
+            </div>
+
+            <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-stone-950 tracking-tight leading-[1.05] mb-4">
+                Jessika <span class="font-amp text-brand-plum font-normal text-6xl sm:text-8xl lg:text-9xl align-middle px-1">&</span> Joshua
+            </h1>
+
+            <p class="text-stone-600 font-sans text-sm sm:text-lg max-w-md mx-auto mb-10 font-normal tracking-wide">
+                One Unforgettable Day.
+            </p>
+
+            <!-- Phone Lookup Card -->
+            <div class="p-6 sm:p-8 bg-white rounded-3xl border border-stone-200/90 shadow-2xl text-left max-w-lg mx-auto">
+                <label for="guestSearchInput" class="block text-xs font-bold uppercase tracking-wider text-stone-900 mb-1">
+                    Find Your Invitation
+                </label>
+                <p class="text-xs text-stone-500 mb-5 leading-relaxed">
+                    Enter your 10-digit cell phone number to unlock your personalized schedule, dress code guide, local ETA map, and RSVP form.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                    <input type="tel" id="guestSearchInput" placeholder="e.g. (713) 555-0101" 
+                           onkeypress="if(event.key==='Enter') performGuestLookup()"
+                           class="flex-grow px-4 py-3.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-plum focus:outline-none transition text-sm bg-stone-50/50">
+                    <button onclick="performGuestLookup()" type="button" class="px-6 py-3.5 bg-brand-plum text-white font-bold rounded-xl hover:bg-brand-plumDark transition text-xs uppercase tracking-wider shrink-0 shadow-md">
+                        Unlock Invite &rarr;
+                    </button>
+                </div>
+
+                <div id="lookupStatusMessage" class="hidden"></div>
+
+                <div class="mt-4 pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-stone-500">
+                    <span class="font-semibold text-stone-700">Quick Test Views:</span>
+                    <div class="space-x-2">
+                        <button type="button" onclick="quickSearch('(713) 555-0101')" class="underline hover:text-brand-plum">(713) 555-0101 (Both)</button>
+                        <button type="button" onclick="quickSearch('(713) 555-0102')" class="underline hover:text-brand-plum">(713) 555-0102 (Brunch)</button>
+                        <button type="button" onclick="quickSearch('(713) 555-0103')" class="underline hover:text-brand-plum">(713) 555-0103 (Night)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-[11px] text-stone-400 mt-8 uppercase tracking-widest font-semibold">
+            Made with love for family, friends & great memories
+        </footer>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PAGE 2: FULL DYNAMIC INVITATION PAGE       -->
+    <!-- ========================================== -->
+    <div id="pageInvitation" class="hidden transition-all duration-500">
+        <!-- Navigation Header -->
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-brand-cream/90 backdrop-blur-md border-b border-stone-200/80 transition-all duration-300" id="navbar">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <a href="#hero" class="font-serif text-2xl font-bold tracking-tight hover:opacity-80 transition flex items-center gap-1">
+                    J <span class="font-amp text-brand-plum text-3xl font-normal leading-none">&</span> J
+                </a>
+                
+                <div class="hidden md:flex space-x-7 text-xs font-semibold tracking-widest uppercase text-stone-700">
+                    <a href="#events" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">Schedule</a>
+                    <a href="#travel" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">Travel & Hotels</a>
+                    <a href="#guide" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">Houston Guide</a>
+                    <a href="#dresscode" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">Dress Code</a>
+                    <a href="#faq" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">FAQs</a>
+                    <a href="#registry" class="hover:text-stone-900 transition-colors py-1 border-b-2 border-transparent hover:border-brand-plum">Registry</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="#rsvp" class="inline-flex items-center justify-center px-5 py-2 text-xs font-bold uppercase tracking-widest text-white bg-brand-plum rounded-full hover:bg-brand-plumDark transition-all duration-300 shadow-sm border border-brand-plum">
+                        RSVP
+                    </a>
+                    <button onclick="showPage('landing')" type="button" class="text-xs text-stone-500 hover:text-stone-900 underline uppercase tracking-wider font-semibold">
+                        ← Exit
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-stone-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden bg-brand-cream border-b border-stone-200 px-4 pt-2 pb-6 space-y-3 font-semibold uppercase text-xs tracking-wider">
+                <a href="#events" class="block py-2 text-stone-800">Schedule</a>
+                <a href="#travel" class="block py-2 text-stone-800">Travel & Hotels</a>
+                <a href="#guide" class="block py-2 text-stone-800">Houston Guide</a>
+                <a href="#dresscode" class="block py-2 text-stone-800">Dress Code</a>
+                <a href="#faq" class="block py-2 text-stone-800">FAQs</a>
+                <a href="#registry" class="block py-2 text-stone-800">Registry</a>
+                <a href="#rsvp" class="block py-2 text-brand-plum font-bold underline">RSVP Now</a>
+                <button onclick="showPage('landing')" class="block py-2 text-stone-500 underline text-left w-full">Change Guest / Exit</button>
+            </div>
+        </nav>
+
+        <!-- Page 2 Hero Header Banner -->
+        <section id="hero" class="relative pt-28 pb-12 md:pt-36 md:pb-16 hero-gradient-bg border-b border-stone-200/60 overflow-hidden text-center px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700 text-xs font-semibold tracking-wider uppercase mb-6">
+                    <span class="w-2 h-2 rounded-full bg-brand-plum animate-pulse"></span>
+                January 30, 2027 • Houston, Texas
+                </div>
+
+                <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-stone-950 tracking-tight leading-[1.05] mb-4">
+                    Jessika <span class="font-amp text-brand-plum font-normal text-6xl sm:text-8xl lg:text-9xl align-middle px-1">&</span> Joshua
+                </h1>
+
+                <!-- Personalized Guest Greeting Banner -->
+                <div id="personalizedGreetingBanner" class="max-w-xl mx-auto mb-10 p-5 bg-white border border-brand-plum/20 rounded-3xl shadow-lg text-stone-900 text-center animate-fade-in">
+                    <span class="font-serif text-2xl sm:text-3xl font-bold text-stone-950 block" id="greetingName">Welcome!</span>
+                    <span class="text-xs sm:text-sm text-stone-600 mt-1 block font-medium" id="greetingDetail">We have prepared your custom wedding schedule below.</span>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/90 shadow-xl max-w-xl mx-auto">
+                    <h3 class="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-stone-400 font-bold mb-4">Counting Down to Celebration Day</h3>
+                    <div class="grid grid-cols-4 gap-3 sm:gap-6 text-center">
+                        <div class="bg-stone-50 p-3 sm:p-4 rounded-2xl border border-stone-200/60">
+                            <span id="days" class="font-serif text-2xl sm:text-4xl font-bold text-stone-950 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] text-stone-500 uppercase tracking-widest font-semibold">Days</span>
+                        </div>
+                        <div class="bg-stone-50 p-3 sm:p-4 rounded-2xl border border-stone-200/60">
+                            <span id="hours" class="font-serif text-2xl sm:text-4xl font-bold text-stone-950 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] text-stone-500 uppercase tracking-widest font-semibold">Hours</span>
+                        </div>
+                        <div class="bg-stone-50 p-3 sm:p-4 rounded-2xl border border-stone-200/60">
+                            <span id="minutes" class="font-serif text-2xl sm:text-4xl font-bold text-stone-950 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] text-stone-500 uppercase tracking-widest font-semibold">Mins</span>
+                        </div>
+                        <div class="bg-stone-50 p-3 sm:p-4 rounded-2xl border border-stone-200/60">
+                            <span id="seconds" class="font-serif text-2xl sm:text-4xl font-bold text-brand-plum block">00</span>
+                            <span class="text-[9px] sm:text-[10px] text-brand-plum uppercase tracking-widest font-semibold">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Schedule Section -->
+        <section id="events" class="py-16 md:py-20 px-4 max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-plum font-bold uppercase tracking-[0.2em] text-xs">Our Celebration!</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-stone-950 mt-2">Your Schedule </h2>
+                <p id="scheduleDescription" class="text-stone-600 mt-4 leading-relaxed text-sm sm:text-base">
+                    Here are the details for our big day.
+                </p>
+            </div>
+
+            <!-- Dynamic Events Grid -->
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12" id="eventsGrid">
+                <!-- Event 1: Family Brunch -->
+                <div id="eventCardBrunch" class="bg-white rounded-3xl p-8 sm:p-10 border border-stone-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-greenLight text-stone-800 text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 rounded-bl-2xl border-l border-b border-stone-200/60">
+                        All Ages (including kids!) Welcome 🌿
+                    </div>
+
+                    <div>
+                        <div class="w-12 h-12 bg-stone-100 rounded-2xl flex items-center justify-center text-xl mb-6">
+                            🪻
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-green">Morning & Afternoon</span>
+                        <h3 class="font-serif text-3xl font-bold text-stone-950 mt-1 mb-4">Family & Friends Tapas Brunch</h3>
+                        
+                        <div class="space-y-3 mb-6 text-sm text-stone-600">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-plum shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong>Time:</strong> 11:00 AM – 2:00 PM</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-plum shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span><strong>Location:</strong> Barcelona Wine Bar<br/><span class="text-xs text-stone-500">1731 Westheimer Rd, Houston, TX 77098 (Montrose)</span></span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-plum shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                                <span><strong>Dress Code:</strong> Winter Garden Chic </span>
+                            </div>
+                        </div>
+
+                        <p class="text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                            Join us for Spanish tapas, mimosa & sangria toasts, warm churros, and sweet ceremony vows in Montrose. Children and family members of all ages are warmly invited!
+                        </p>
+                    </div>
+
+                    <div class="mt-8 pt-4">
+                        <a href="https://maps.google.com/?cid=5256579457618377504" target="_blank" rel="noopener" class="text-xs font-bold uppercase tracking-widest text-stone-950 hover:text-brand-plum flex items-center gap-1 transition">
+                            View Directions to Barcelona Wine Bar &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 2: Dive Bar Black Tie -->
+                <div id="eventCardNight" class="theme-night-bg text-white rounded-3xl p-8 sm:p-10 border border-stone-800 shadow-xl flex flex-col justify-between relative overflow-hidden ring-1 ring-brand-plum/40">
+                    <div class="absolute top-0 right-0 bg-brand-plum text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 rounded-bl-2xl">
+                        Adults Only (21+) 🍸
+                    </div>
+
+                    <div>
+                        <div class="w-12 h-12 bg-stone-900 text-brand-green rounded-2xl flex items-center justify-center text-xl mb-6 border border-stone-800">
+                            🍸
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-green">Part II • Evening Celebration</span>
+                        <h3 class="font-serif text-3xl font-bold text-white mt-1 mb-4">Creative Black Tie @ Donna's</h3>
+                        
+                        <div class="space-y-3 mb-6 text-sm text-stone-300">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong>Time:</strong> 8:00 PM – Late Late Late</span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span><strong>Location:</strong> Donna's on White Oak<br/><span class="text-xs text-stone-400">2626 White Oak Dr, Houston, TX 77009 (Heights)</span></span>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-brand-green shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                                <span><strong>Dress Code:</strong> Creative Black Tie (Tuxedos, Gowns & Velvet)</span>
+                            </div>
+                        </div>
+
+                        <p class="text-stone-400 text-sm leading-relaxed border-t border-stone-800 pt-4">
+                            Yes, you read that right! Tuxedos encouraged, bad decisions expected.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 pt-4">
+                        <a href="https://maps.google.com/?cid=11488756235448350160" target="_blank" rel="noopener" class="text-xs font-bold uppercase tracking-widest text-brand-green hover:underline flex items-center gap-1">
+                            View Directions to Donna's on White Oak &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accommodations & Travel ETA Section -->
+        <section id="travel" class="py-16 md:py-20 px-4 bg-stone-100 border-y border-stone-200">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-plum font-bold uppercase tracking-[0.2em] text-xs">Accommodations & Transit</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-stone-950 mt-2">Travel & Hotel Blocks</h2>
+                    <p class="text-stone-600 mt-3 text-sm sm:text-base">
+                        We've selected two boutique hotel blocks conveniently situated between our venues.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <!-- Hotel Block 1 -->
+                    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-brand-plum bg-brand-plum/10 px-3 py-1 rounded-full">Primary Block • Montrose</span>
+                                <span class="text-xs text-stone-500 font-semibold">10 Min to Venues</span>
+                            </div>
+                            <h3 class="font-serif text-2xl font-bold text-stone-950 mb-2">Hotel Daphne</h3>
+                            <p class="text-stone-600 text-xs leading-relaxed mb-4">
+                                Iconic boutique hotel in Heights featuring luxury suites, gardens, and an amazing art collection.
+                            </p>
+                            <div class="text-xs text-stone-700 space-y-1.5 font-medium border-t border-stone-100 pt-3">
+                                <p>📍  347 West 20th Street, Houston, TX 77008</p>
+                                <p>🔑 Mention <strong>"Jessika & Joshua Wedding"</strong> for special block rates.</p>
+                            </div>
+                        </div>
+                        <a href="https://www.bunkhousehotels.com/hotel-daphne" target="_blank" rel="noopener" class="mt-6 inline-block text-center w-full py-3 bg-stone-900 text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-stone-800 transition">Book Hotel Block ↗</a>
+                    </div>
+
+                    <!-- Hotel Block 2 -->
+                    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-brand-green bg-brand-green/10 px-3 py-1 rounded-full">Boutique Option • Heights</span>
+                                <span class="text-xs text-stone-500 font-semibold">5 Min to Donna's</span>
+                            </div>
+                            <h3 class="font-serif text-2xl font-bold text-stone-950 mb-2">Heights House Hotel</h3>
+                            <p class="text-stone-600 text-xs leading-relaxed mb-4">
+                                Vibrant mid-century retro chic hotel with pool bar located right in the Heights neighborhood.
+                            </p>
+                            <div class="text-xs text-stone-700 space-y-1.5 font-medium border-t border-stone-100 pt-3">
+                                <p>📍 100 W Cavalcade St, Houston, TX 77009</p>
+                                <p>🔑 Use Promo Code: <strong>JJWED2027</strong> when booking online.</p>
+                            </div>
+                        </div>
+                        <a href="https://heightshousehotel.com" target="_blank" rel="noopener" class="mt-6 inline-block text-center w-full py-3 bg-stone-900 text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-stone-800 transition">Book Hotel Block ↗</a>
+                    </div>
+                </div>
+
+                <!-- Airport & Rideshare ETA Card -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                    <h4 class="font-serif text-2xl font-bold text-stone-950 mb-4 flex items-center gap-2">
+                        ✈️ Airport & Local Rideshare ETAs
+                    </h4>
+                    <div class="grid sm:grid-cols-3 gap-6 text-xs text-stone-600">
+                        <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                            <h5 class="font-bold text-stone-900 mb-1">IAH (George Bush Intercontinental)</h5>
+                            <p>~30–45 mins to Montrose & Heights via Uber/Lyft. Primary hub for United Airlines.</p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                            <h5 class="font-bold text-stone-900 mb-1">HOU (William P. Hobby Airport)</h5>
+                            <p>~20–30 mins to Central Houston. Primary hub for Southwest Airlines.</p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100">
+                            <h5 class="font-bold text-stone-900 mb-1">Getting Around Town</h5>
+                            <p>Rideshare (Uber / Lyft) recommended!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Houston Local Guide Section (For the 6-Hour Break) -->
+        <section id="guide" class="py-16 md:py-20 px-4 max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-plum font-bold uppercase tracking-[0.2em] text-xs">Between Celebrations</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-stone-950 mt-2">Couple's Houston Favorites</h2>
+                <p class="text-stone-600 mt-3 text-sm sm:text-base">
+                    Enjoying the 2:00 PM – 8:00 PM intermission? Here are our favorite spots to grab coffee, rest, or grab a pre-game taco!
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-6">
+                <div class="p-6 bg-white rounded-3xl border border-stone-200 shadow-sm">
+                    <span class="text-2xl mb-3 block">☕</span>
+                    <h3 class="font-serif text-xl font-bold text-stone-950 mb-1">Tenfold Coffee</h3>
+                    <span class="text-[10px] font-bold text-brand-plum uppercase tracking-wider block mb-2">Heights • Espresso & Pastries</span>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Great espresso, matchas, plenty of seating and shameless plug, my big bro owns it.
+                    </p>
+                </div>
+
+                <div class="p-6 bg-white rounded-3xl border border-stone-200 shadow-sm">
+                    <span class="text-2xl mb-3 block">🦪</span>
+                    <h3 class="font-serif text-xl font-bold text-stone-950 mb-1">Marigold Club</h3>
+                    <span class="text-[10px] font-bold text-brand-green uppercase tracking-wider block mb-2">Montrose • Pre-game Tinis, Oysters and Shimps</span>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Go for our Go-To Happy Hour.
+                    </p>
+                </div>
+
+                <div class="p-6 bg-white rounded-3xl border border-stone-200 shadow-sm">
+                    <span class="text-2xl mb-3 block">🎨</span>
+                    <h3 class="font-serif text-xl font-bold text-stone-950 mb-1">Menil Collection</h3>
+                    <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider block mb-2">Montrose • Free Art Museum</span>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Free museum with world-class surrealist art and peaceful green lawn for afternoon strolls.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP Section -->
+        <section id="rsvp" class="py-16 md:py-20 px-4 bg-white border-t border-stone-200">
+            <div class="max-w-3xl mx-auto bg-brand-cream rounded-3xl p-8 sm:p-12 border border-stone-200/90 shadow-xl">
+                <div class="text-center mb-8">
+                    <span class="text-brand-plum font-bold uppercase tracking-[0.2em] text-xs">Kindly Respond</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-stone-950 mt-2">RSVP</h2>
+                    <p class="text-stone-600 mt-2 text-sm">Please submit your response by <strong>December 15, 2026</strong>.</p>
+                </div>
+
+                <form id="rsvpForm" class="space-y-6">
+                    <!-- Guest Names Confirmation -->
+                    <div class="p-5 bg-white rounded-2xl border border-stone-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-2">
+                            Guest Full Name(s)
+                        </label>
+                        <input type="text" id="rsvpGuestNamesInput" required placeholder="e.g. Jane Doe & John Smith" 
+                               class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-plum focus:outline-none transition text-sm bg-stone-50/50">
+                    </div>
+
+                    <!-- Event 1 Selection (Tapas Brunch) -->
+                    <div id="rsvpBrunchBlock" class="p-5 bg-white rounded-2xl border border-stone-200">
+                        <label class="block text-sm font-bold text-stone-950 mb-1">Act I: Family Tapas Brunch @ Barcelona Wine Bar (11:00 AM)</label>
+                        <p class="text-xs text-stone-500 mb-3">1731 Westheimer Rd • All ages, kids & family welcome</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center justify-center p-3 border border-stone-300 rounded-xl bg-stone-50 cursor-pointer hover:border-brand-plum has-[:checked]:border-brand-plum has-[:checked]:bg-brand-plum has-[:checked]:text-white text-xs font-semibold transition">
+                                <input type="radio" name="brunchAttending" value="yes" class="hidden" checked>
+                                Joyfully Attending
+                            </label>
+                            <label class="flex items-center justify-center p-3 border border-stone-300 rounded-xl bg-stone-50 cursor-pointer hover:border-stone-900 has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-white text-xs font-semibold transition">
+                                <input type="radio" name="brunchAttending" value="no" class="hidden">
+                                Regretfully Declining
+                            </label>
+                        </div>
+
+                        <!-- Kids count -->
+                        <div class="mt-4 pt-4 border-t border-stone-100">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Number of Children Attending Brunch</label>
+                            <select class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-brand-plum focus:outline-none bg-white">
+                                <option value="0">None (0)</option>
+                                <option value="1">1 Child</option>
+                                <option value="2">2 Children</option>
+                                <option value="3+">3+ Children</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 Selection (Dive Bar Night) -->
+                    <div id="rsvpNightBlock" class="p-5 theme-night-bg text-white rounded-2xl border border-stone-800">
+                        <label class="block text-sm font-bold text-white mb-1">Act II: Black Tie @ Donna's (8:00 PM)</label>
+                        <p class="text-xs text-brand-green font-semibold mb-3">Adults Only (21+)</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center justify-center p-3 border border-stone-800 rounded-xl bg-stone-900 cursor-pointer hover:border-brand-green has-[:checked]:border-brand-green has-[:checked]:bg-brand-green has-[:checked]:text-white text-xs font-semibold transition">
+                                <input type="radio" name="barAttending" value="yes" class="hidden" checked>
+                                Joyfully Attending
+                            </label>
+                            <label class="flex items-center justify-center p-3 border border-stone-800 rounded-xl bg-stone-900 cursor-pointer hover:border-white has-[:checked]:border-white has-[:checked]:bg-white has-[:checked]:text-stone-950 text-xs font-semibold transition">
+                                <input type="radio" name="barAttending" value="no" class="hidden">
+                                Regretfully Declining
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dietary Preferences -->
+                    <div class="p-5 bg-white rounded-2xl border border-stone-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-2">
+                            Dietary Restrictions / Preferences
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium">
+                            <label class="p-2 border border-stone-200 rounded-lg flex items-center gap-1.5 cursor-pointer bg-stone-50"><input type="checkbox"> Vegetarian</label>
+                            <label class="p-2 border border-stone-200 rounded-lg flex items-center gap-1.5 cursor-pointer bg-stone-50"><input type="checkbox"> Vegan</label>
+                            <label class="p-2 border border-stone-200 rounded-lg flex items-center gap-1.5 cursor-pointer bg-stone-50"><input type="checkbox"> Gluten-Free</label>
+                            <label class="p-2 border border-stone-200 rounded-lg flex items-center gap-1.5 cursor-pointer bg-stone-50"><input type="checkbox"> Nut Allergy</label>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Song Request (iTunes Powered API + Spotify Direct Link) -->
+                    <div class="p-5 bg-white rounded-2xl border border-stone-200 shadow-sm">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1">
+                            🎵 Jukebox Song Request
+                        </label>
+                        <p class="text-xs text-stone-500 mb-3">
+                            Search for a real song to request for Donna's jukebox on the big night.
+                        </p>
+
+                        <!-- Song Search Input Container -->
+                        <div class="relative">
+                            <div class="relative">
+                                <input type="text" id="songSearchInput" placeholder="Search song title or artist (e.g. Jungle, Pitbull, Daft Punk, Bad Bunny)..." 
+                                    class="w-full px-4 py-3 pl-10 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-plum focus:outline-none transition text-sm bg-stone-50/50">
+                                <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+
+                            <!-- Live Search Results Dropdown -->
+                            <div id="searchResultsDropdown" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl border border-stone-200 shadow-2xl z-50 max-h-72 overflow-y-auto divide-y divide-stone-100">
+                            </div>
+                        </div>
+
+                        <!-- Selected Track Card -->
+                        <div id="selectedSongCard" class="hidden mt-4 p-3.5 bg-stone-900 text-white rounded-xl border border-stone-800 flex items-center justify-between gap-3 animate-fade-in">
+                            <div class="flex items-center gap-3 overflow-hidden">
+                                <img id="selectedTrackArt" src="" alt="Album Cover" class="w-12 h-12 rounded-lg object-cover shrink-0 border border-stone-700 shadow">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-brand-green bg-brand-green/20 px-2 py-0.5 rounded-full">Jukebox Track Selected</span>
+                                        <a id="spotifySearchLink" href="#" target="_blank" rel="noopener" class="text-[10px] text-stone-400 hover:text-white flex items-center gap-1 underline transition">
+                                            Open in Spotify ↗
+                                        </a>
+                                    </div>
+                                    <h5 id="selectedTrackName" class="font-bold text-sm truncate text-white mt-0.5">Song Title</h5>
+                                    <p id="selectedArtistName" class="text-xs text-stone-400 truncate">Artist Name</p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="clearSelectedSong()" class="p-2 text-stone-400 hover:text-white text-xs font-semibold shrink-0">
+                                ✕ Clear
+                            </button>
+                        </div>
+
+                        <!-- Hidden Input to store selected track data -->
+                        <input type="hidden" id="selectedSongData" name="jukeboxSong">
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-brand-plum text-white font-semibold rounded-xl hover:bg-brand-plumDark transition-all duration-300 shadow-lg uppercase tracking-widest text-xs">
+                        Submit RSVP Response
+                    </button>
+                </form>
+
+                <!-- Success Message Toast/Box -->
+                <div id="rsvpSuccess" class="hidden mt-6 p-6 bg-white border border-brand-plum/30 text-stone-900 rounded-2xl text-center">
+                    <h4 class="font-serif text-2xl font-bold mb-1 text-brand-plum">✨ RSVP Received!</h4>
+                    <p class="text-xs text-stone-600">Thank you! We can't wait to celebrate with you!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dress Code Section -->
+        <section id="dresscode" class="py-16 md:py-20 theme-night-bg text-white relative overflow-hidden">
+            <div class="max-w-5xl mx-auto px-4 relative z-10">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-green font-bold uppercase tracking-[0.2em] text-xs">The Attire Breakdown</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal mt-2">Dress Code Guide</h2>
+                    <p id="dresscodeSubtitle" class="text-stone-400 mt-3 text-sm sm:text-base">
+                        Below are attire guidelines for your event(s).
+                    </p>
+                </div>
+
+                <div id="dresscodeGrid" class="grid md:grid-cols-2 gap-8">
+                    <!-- Brunch Vibe Card -->
+                    <div id="dresscodeCardBrunch" class="bg-stone-900/90 p-8 rounded-3xl border border-stone-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif text-2xl font-bold text-white">Daytime: Winter Garden Chic</h3>
+                            <span class="text-[10px] bg-stone-800 text-stone-200 border border-stone-700 px-3 py-1 rounded-full font-bold uppercase tracking-wider">11 AM Brunch</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-stone-300">
+                            <li class="flex items-center gap-2"><span class="text-brand-green">❄️</span> Long-sleeve dresses, tailored wool trousers, blazers, or winter layers</li>
+                            <li class="flex items-center gap-2"><span class="text-brand-green">🧥</span> Elegant wraps, chic coats, and boots appropriate for January weather</li>
+                            <li class="flex items-center gap-2"><span class="text-brand-green">👨‍👩‍👧</span> Kid-friendly, cozy, and elevated winter brunch style!</li>
+                        </ul>
+                    </div>
+
+                    <!-- Night Vibe Card -->
+                    <div id="dresscodeCardNight" class="bg-black p-8 rounded-3xl border border-brand-plum/40 shadow-2xl relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif text-2xl font-bold text-white">Nighttime: Creative Black Tie</h3>
+                            <span class="text-[10px] bg-brand-plum text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider">8 PM Night Out</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-stone-300">
+                            <li class="flex items-center gap-2"><span class="text-brand-green">🤵</span> Tuxedos, velvet dinner jackets, statement blazers, or sharp black tie suits</li>
+                            <li class="flex items-center gap-2"><span class="text-brand-green">💃</span> Floor-length gowns, bold sequins, silk, velvet, or head-turning accessories</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-16 md:py-20 px-4 max-w-4xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="text-brand-plum font-bold uppercase tracking-[0.2em] text-xs">Questions & Answers</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-stone-950 mt-2">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4" id="faqAccordion">
+                <!-- FAQ 1 -->
+                <div class="border border-stone-200/90 rounded-2xl bg-white overflow-hidden shadow-sm">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-serif text-xl font-bold text-stone-950 flex justify-between items-center focus:outline-none">
+                        <span>Wait, Black Tie at a Donna's? Are you serious?</span>
+                        <span class="faq-icon text-brand-plum text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                        100% serious! We love the look of it. We want everyone looking like Hollywood royalty while drinking tinis and eating tacos and pizza. Embrace the glamour in an unpretentious setting!
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="border border-stone-200/90 rounded-2xl bg-white overflow-hidden shadow-sm">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-serif text-xl font-bold text-stone-950 flex justify-between items-center focus:outline-none">
+                        <span>Are children invited to both events?</span>
+                        <span class="faq-icon text-brand-plum text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                        Kids are warmly welcomed and encouraged at the morning <strong>Family Brunch</strong>! However, the night event at <strong>Donna's on White Oak</strong> adults only so parents can let their hair down and enjoy night lights.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="border border-stone-200/90 rounded-2xl bg-white overflow-hidden shadow-sm">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-serif text-xl font-bold text-stone-950 flex justify-between items-center focus:outline-none">
+                        <span>What is the break between Brunch and Evening?</span>
+                        <span class="faq-icon text-brand-plum text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                        Brunch ends at 2:00 PM, leaving a 6-hour gap until 8:00 PM. This gives everyone plenty of time to rest, change into Creative Black Tie attire (tuxes, velvet jackets & gowns), grab dinner if desired, or explore Houston.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="border border-stone-200/90 rounded-2xl bg-white overflow-hidden shadow-sm">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-serif text-xl font-bold text-stone-950 flex justify-between items-center focus:outline-none">
+                        <span>What transportation do you recommend?</span>
+                        <span class="faq-icon text-brand-plum text-2xl font-light">+</span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-stone-600 text-sm leading-relaxed border-t border-stone-100 pt-4">
+                        Since the evening venue is in Heights, Houston, we strongly recommend using Rideshare (Uber / Lyft) so everyone can celebrate safely without worrying about parking!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registry Section -->
+        <section id="registry" class="py-16 md:py-20 theme-night-bg text-white text-center px-4">
+            <div class="max-w-3xl mx-auto">
+                <span class="text-brand-green font-bold uppercase tracking-[0.2em] text-xs">Registry & Honeymoon Fund</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal mt-2 mb-6">Your Presence is Our Gift</h2>
+                <p class="text-stone-300 text-sm sm:text-base leading-relaxed mb-10 max-w-xl mx-auto">
+                    Having you with us to celebrate is all we ask for. If you wish to honor us with a gift, we have created a Honeymoon Fund to help kickstart our next adventure in Japan!
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#" class="px-8 py-4 bg-brand-plum text-white font-bold rounded-full hover:bg-brand-plumDark transition text-xs tracking-widest uppercase shadow-lg">
+                        Contribute to Honeymoon Fund ✈️
+                    </a>
+                    <a href="#" class="px-8 py-4 bg-stone-900 text-white border border-stone-700 font-bold rounded-full hover:bg-stone-800 transition text-xs tracking-widest uppercase">
+                        View Retail Registry 🎁
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 bg-black text-stone-500 text-center text-xs">
+            <div class="max-w-6xl mx-auto px-4">
+                <p class="font-serif text-2xl text-stone-200 font-normal mb-2">Jessika & Joshua</p>
+                <p class="mb-4 text-stone-400">January 30, 2027 • Houston, Texas</p>
+                <p>© 2027 Made with love for family, friends, and great memories.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Paste your Google Apps Script Web App URL here to connect your RSVP form to Google Sheets:
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/u/0/home/projects/1ZcYXzjUXDsmQLPFtC6riRz892y3oH61mNJtarckn7KvgjXQqSxvG3d4N/edit';
+
+        function showPage(pageName) {
+            const landing = document.getElementById('pageLanding');
+            const invitation = document.getElementById('pageInvitation');
+
+            if (pageName === 'invitation') {
+                landing.classList.add('hidden');
+                invitation.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                invitation.classList.add('hidden');
+                landing.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        const targetDate = new Date("January 30, 2027 11:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('.faq-icon');
+                
+                const isOpen = !content.classList.contains('hidden');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-icon').forEach(i => i.textContent = '+');
+
+                // Toggle current if it wasn't open
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.textContent = '−';
+                }
+            });
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        const guestDatabase = {
+            "7135550101": { name: "Jane Doe", phone: "(713) 555-0101", tier: "both" },
+            "7135550102": { name: "Grandma Smith", phone: "(713) 555-0102", tier: "brunch" },
+            "7135550103": { name: "Alex Johnson", phone: "(713) 555-0103", tier: "night" }
+        };
+
+        function normalizePhone(str) {
+            return str ? str.replace(/\D/g, '') : '';
+        }
+
+        let currentTier = 'both';
+
+        function setGuestTier(tier, guestName) {
+            currentTier = tier;
+            
+            const eventsGrid = document.getElementById('eventsGrid');
+            const eventCardBrunch = document.getElementById('eventCardBrunch');
+            const eventCardNight = document.getElementById('eventCardNight');
+            const rsvpBrunchBlock = document.getElementById('rsvpBrunchBlock');
+            const rsvpNightBlock = document.getElementById('rsvpNightBlock');
+            const dresscodeGrid = document.getElementById('dresscodeGrid');
+            const dresscodeCardBrunch = document.getElementById('dresscodeCardBrunch');
+            const dresscodeCardNight = document.getElementById('dresscodeCardNight');
+
+            const greetingName = document.getElementById('greetingName');
+            const greetingDetail = document.getElementById('greetingDetail');
+            const scheduleDesc = document.getElementById('scheduleDescription');
+            const dresscodeSubtitle = document.getElementById('dresscodeSubtitle');
+            const rsvpGuestNamesInput = document.getElementById('rsvpGuestNamesInput');
+
+            // Reset Switcher Button Styles
+            ['Both', 'Brunch', 'Night', 'Locked'].forEach(id => {
+                const btn = document.getElementById('tierBtn' + id);
+                if (btn) {
+                    btn.className = "px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-stone-900 border-stone-800 text-stone-300 hover:text-white";
+                }
+            });
+
+            const activeBtn = document.getElementById('tierBtn' + (tier === 'both' ? 'Both' : tier.charAt(0).toUpperCase() + tier.slice(1)));
+            if (activeBtn) {
+                activeBtn.className = "px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-brand-plum border-brand-plum text-white shadow-sm";
+            }
+
+            if (guestName && rsvpGuestNamesInput) {
+                rsvpGuestNamesInput.value = guestName;
+            }
+
+            if (tier === 'brunch') {
+                eventCardBrunch.classList.remove('hidden');
+                eventCardNight.classList.add('hidden');
+                eventsGrid.className = "grid grid-cols-1 max-w-xl mx-auto";
+                
+                rsvpBrunchBlock.classList.remove('hidden');
+                rsvpNightBlock.classList.add('hidden');
+
+                dresscodeCardBrunch.classList.remove('hidden');
+                dresscodeCardNight.classList.add('hidden');
+                dresscodeGrid.className = "grid grid-cols-1 max-w-xl mx-auto";
+                dresscodeSubtitle.innerText = "Below are attire guidelines for the morning celebration.";
+
+                greetingName.innerText = `Welcome, ${guestName || 'Guest'}! 🍷`;
+                greetingDetail.innerText = "You are warmly invited to Our Family & Friends Tapas Brunch.";
+                scheduleDesc.innerText = "Here are the details for our morning Tapas Brunch at Barcelona Wine Bar.";
+
+            } else if (tier === 'night') {
+                eventCardBrunch.classList.add('hidden');
+                eventCardNight.classList.remove('hidden');
+                eventsGrid.className = "grid grid-cols-1 max-w-xl mx-auto";
+
+                rsvpBrunchBlock.classList.add('hidden');
+                rsvpNightBlock.classList.remove('hidden');
+
+                dresscodeCardBrunch.classList.add('hidden');
+                dresscodeCardNight.classList.remove('hidden');
+                dresscodeGrid.className = "grid grid-cols-1 max-w-xl mx-auto";
+                dresscodeSubtitle.innerText = "Below are attire guidelines for the evening celebration.";
+
+                greetingName.innerText = `Welcome, ${guestName || 'Guest'}! 🍸`;
+                greetingDetail.innerText = "You are warmly invited to Creative Black Tie @ Donna's on White Oak.";
+                scheduleDesc.innerText = "Here are the details for our Creative Black Tie night out at Donna's.";
+
+            } else { // both
+                eventCardBrunch.classList.remove('hidden');
+                eventCardNight.classList.remove('hidden');
+                eventsGrid.className = "grid md:grid-cols-2 gap-8 lg:gap-12";
+
+                rsvpBrunchBlock.classList.remove('hidden');
+                rsvpNightBlock.classList.remove('hidden');
+
+                dresscodeCardBrunch.classList.remove('hidden');
+                dresscodeCardNight.classList.remove('hidden');
+                dresscodeGrid.className = "grid md:grid-cols-2 gap-8";
+                dresscodeSubtitle.innerText = "Below are attire guidelines for both events.";
+
+                greetingName.innerText = `Welcome, ${guestName || 'Guest'}! ✨`;
+                greetingDetail.innerText = "You are invited to Brunch at 11 AM and Creative Black Tie at 8 PM.";
+                scheduleDesc.innerText = "We are so excited to celebrate with you across both events of our wedding day!";
+            }
+
+            showPage('invitation');
+        }
+
+        function performGuestLookup() {
+            const rawQuery = document.getElementById('guestSearchInput').value.trim();
+            if (!rawQuery) return;
+
+            const cleanPhone = normalizePhone(rawQuery);
+            const lookupMessage = document.getElementById('lookupStatusMessage');
+            lookupMessage.classList.remove('hidden');
+
+            if (guestDatabase[cleanPhone]) {
+                const guest = guestDatabase[cleanPhone];
+                setGuestTier(guest.tier, guest.name);
+
+                lookupMessage.className = "mt-3 text-xs text-emerald-700 font-semibold bg-emerald-50 p-2.5 rounded-lg border border-emerald-200";
+                lookupMessage.innerText = `✓ Found invitation for ${guest.name}! Unlocking your page...`;
+            } else {
+                setGuestTier('both', 'Guest');
+
+                lookupMessage.className = "mt-3 text-xs text-amber-800 font-semibold bg-amber-50 p-2.5 rounded-lg border border-amber-200";
+                lookupMessage.innerText = "ℹ Unlocking invitation page...";
+            }
+        }
+
+        function quickSearch(phoneNum) {
+            document.getElementById('guestSearchInput').value = phoneNum;
+            performGuestLookup();
+        }
+
+        // Initialize on Page 1 (Landing)
+        showPage('landing');
+
+        const songSearchInput = document.getElementById('songSearchInput');
+        const searchResultsDropdown = document.getElementById('searchResultsDropdown');
+        const selectedSongCard = document.getElementById('selectedSongCard');
+        const selectedTrackArt = document.getElementById('selectedTrackArt');
+        const selectedTrackName = document.getElementById('selectedTrackName');
+        const selectedArtistName = document.getElementById('selectedArtistName');
+        const selectedSongData = document.getElementById('selectedSongData');
+        const spotifySearchLink = document.getElementById('spotifySearchLink');
+
+        let searchDebounce = null;
+        let activeAudioPreview = null;
+
+        if (songSearchInput) {
+            songSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                clearTimeout(searchDebounce);
+
+                if (query.length < 2) {
+                    searchResultsDropdown.classList.add('hidden');
+                    return;
+                }
+
+                searchDebounce = setTimeout(() => {
+                    fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=5`)
+                        .then(res => res.json())
+                        .then(data => {
+                            renderSearchResults(data.results);
+                        })
+                        .catch(() => {
+                            searchResultsDropdown.classList.add('hidden');
+                        });
+                }, 300);
+            });
+        }
+
+        function renderSearchResults(results) {
+            if (!results || results.length === 0) {
+                searchResultsDropdown.innerHTML = `<div class="p-4 text-xs text-stone-500 text-center">No songs found. Try searching another title.</div>`;
+                searchResultsDropdown.classList.remove('hidden');
+                return;
+            }
+
+            searchResultsDropdown.innerHTML = results.map(track => {
+                const artwork = track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '200x200bb') : 'https://placehold.co/100x100/3a152e/ffffff?text=🎵';
+                const trackTitleSafe = track.trackName.replace(/'/g, "\\'");
+                const artistTitleSafe = track.artistName.replace(/'/g, "\\'");
+                
+                return `
+                    <div onclick="selectSong('${trackTitleSafe}', '${artistTitleSafe}', '${artwork}', '${track.previewUrl || ''}')" 
+                        class="p-3 hover:bg-stone-50 cursor-pointer flex items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <img src="${artwork}" alt="${track.trackName}" class="w-10 h-10 rounded-lg object-cover shrink-0 border border-stone-200">
+                            <div class="min-w-0">
+                                <h6 class="text-xs font-bold text-stone-900 truncate">${track.trackName}</h6>
+                                <p class="text-[11px] text-stone-500 truncate">${track.artistName}</p>
+                            </div>
+                        </div>
+                        ${track.previewUrl ? `
+                            <button type="button" onclick="event.stopPropagation(); playPreview('${track.previewUrl}')" 
+                                class="p-2 text-stone-400 hover:text-brand-plum text-xs flex items-center gap-1 font-bold shrink-0">
+                                ▶ Preview
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            searchResultsDropdown.classList.remove('hidden');
+        }
+
+        function playPreview(url) {
+            if (activeAudioPreview) {
+                activeAudioPreview.pause();
+            }
+            activeAudioPreview = new Audio(url);
+            activeAudioPreview.play();
+        }
+
+        function selectSong(trackName, artistName, artworkUrl, previewUrl) {
+            if (activeAudioPreview) activeAudioPreview.pause();
+
+            selectedTrackName.innerText = trackName;
+            selectedArtistName.innerText = artistName;
+            selectedTrackArt.src = artworkUrl;
+            
+            const spotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(trackName + ' ' + artistName)}`;
+            spotifySearchLink.href = spotifyUrl;
+
+            selectedSongData.value = JSON.stringify({ track: trackName, artist: artistName, spotifyUrl });
+
+            selectedSongCard.classList.remove('hidden');
+            searchResultsDropdown.classList.add('hidden');
+            songSearchInput.value = `${trackName} - ${artistName}`;
+        }
+
+        function clearSelectedSong() {
+            if (activeAudioPreview) activeAudioPreview.pause();
+            selectedSongCard.classList.add('hidden');
+            selectedSongData.value = '';
+            songSearchInput.value = '';
+            searchResultsDropdown.classList.add('hidden');
+        }
+
+        // Close search dropdown on click outside
+        document.addEventListener('click', (e) => {
+            if (songSearchInput && !songSearchInput.contains(e.target) && searchResultsDropdown && !searchResultsDropdown.contains(e.target)) {
+                searchResultsDropdown.classList.add('hidden');
+            }
+        });
+
+        const rsvpForm = document.getElementById('rsvpForm');
+        const rsvpSuccess = document.getElementById('rsvpSuccess');
+
+        if (rsvpForm) {
+            rsvpForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                rsvpForm.classList.add('opacity-50', 'pointer-events-none');
+
+                // Gather form data to submit
+                const guestNames = document.getElementById('rsvpGuestNamesInput')?.value || '';
+                const guestPhone = document.getElementById('guestSearchInput')?.value || '';
+                
+                const brunchAttending = document.querySelector('input[name="brunchAttending"]:checked')?.value || '';
+                const brunchKidsSelect = document.querySelector('#rsvpBrunchBlock select');
+                const brunchKids = brunchKidsSelect ? brunchKidsSelect.value : '0';
+                
+                const barAttending = document.querySelector('input[name="barAttending"]:checked')?.value || '';
+                
+                // Dietary preferences
+                const dietaryChecked = Array.from(document.querySelectorAll('#rsvp input[type="checkbox"]:checked'))
+                    .map(cb => cb.parentElement.innerText.trim());
+                const dietary = dietaryChecked.length > 0 ? dietaryChecked.join(', ') : 'None';
+
+                // Jukebox song request data
+                let jukeboxTrack = '', jukeboxArtist = '', spotifyUrl = '';
+                const songDataVal = document.getElementById('selectedSongData')?.value;
+                if (songDataVal) {
+                    try {
+                        const parsed = JSON.parse(songDataVal);
+                        jukeboxTrack = parsed.track || '';
+                        jukeboxArtist = parsed.artist || '';
+                        spotifyUrl = parsed.spotifyUrl || '';
+                    } catch (err) {}
+                }
+
+                const payload = {
+                    guestNames,
+                    guestPhone,
+                    brunchAttending,
+                    brunchKids,
+                    barAttending,
+                    dietary,
+                    jukeboxTrack,
+                    jukeboxArtist,
+                    spotifyUrl
+                };
+
+                // Post to Google Sheets backend if URL is configured
+                if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }).catch(err => console.log('RSVP Sheet Submission Error:', err));
+                }
+
+                setTimeout(() => {
+                    rsvpForm.classList.add('hidden');
+                    rsvpSuccess.classList.remove('hidden');
+                }, 600);
+            });
+        }
+    </script>
+</body>
+</html>
