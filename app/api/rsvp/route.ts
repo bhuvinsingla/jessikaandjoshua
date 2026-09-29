@@ -6,6 +6,8 @@ import {
   getSupabaseAdmin,
   guestPersonalName,
   normalizePhone,
+  type GuestRecord,
+  type GuestTier,
 } from "@/lib/supabase";
 
 export async function POST(request: Request) {
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
     const session = await getGuestSession();
     const phone = normalizePhone(session?.phone || body.guestPhone || "");
 
-    let guest = null;
+    let guest: GuestRecord | null = null;
     let guestError: string | null = null;
 
     if (phone) {
@@ -44,14 +46,14 @@ export async function POST(request: Request) {
       guestError = error?.message || null;
       guest = data
         ? {
-            id: data.id,
-            phone: data.phone,
-            email: data.email,
-            first_name: data.first_name || "",
-            last_name: data.last_name || "",
-            addressee: data.addressee || "",
-            name: data.name || "",
-            tier: data.tier,
+            id: String(data.id),
+            phone: (data.phone as string | null) ?? null,
+            email: (data.email as string | null) ?? null,
+            first_name: String(data.first_name || ""),
+            last_name: String(data.last_name || ""),
+            addressee: String(data.addressee || ""),
+            name: String(data.name || ""),
+            tier: data.tier as GuestTier,
           }
         : null;
     }

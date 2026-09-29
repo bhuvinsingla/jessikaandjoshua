@@ -52,6 +52,10 @@ function normalizePhone(str: string) {
   return str ? str.replace(/\D/g, "") : "";
 }
 
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || "").trim().toLowerCase());
+}
+
 function guestLabel(guest: {
   addressee?: string | null;
   first_name?: string | null;
