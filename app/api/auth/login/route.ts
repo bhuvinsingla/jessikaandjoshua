@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { getGuestSession, setGuestSession } from "@/lib/session";
 import {
-  findGuestByPhone,
+  findGuestByLogin,
   getSupabaseAnon,
+  guestDisplayName,
+  isEmail,
+  normalizeEmail,
   normalizePhone,
   phoneLookupKeys,
   toE164,
@@ -14,16 +17,15 @@ function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
 }
 
-function mapGuest(row: {
-  id: string;
-  phone: string;
-  name: string;
-  tier: string;
-}): GuestRecord {
+function mapGuest(row: GuestRecord): GuestRecord {
   return {
     id: row.id,
     phone: row.phone,
-    name: row.name,
+    email: row.email || null,
+    first_name: row.first_name || "",
+    last_name: row.last_name || "",
+    addressee: row.addressee || "",
+    name: row.name || guestDisplayName(row),
     tier: row.tier as GuestTier,
   };
 }
@@ -32,22 +34,37 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as {
       phone?: string;
+      email?: string;
+      login?: string;
       otp?: string;
     };
-    const digits = normalizePhone(body.phone || "");
 
-    if (!phoneLookupKeys(digits).length) {
+    const rawLogin = (body.login || body.email || body.phone || "").trim();
+    if (!rawLogin) {
       return json(
         {
           warning: true,
-          error: "Enter the 10-digit phone number from your invitation.",
+          error: "Enter the phone number or email from your invitation.",
+        },
+        400
+      );
+    }
+
+    const emailLogin = isEmail(rawLogin);
+    if (!emailLogin && !phoneLookupKeys(rawLogin).length) {
+      return json(
+        {
+          warning: true,
+          error:
+            "Enter a valid 10-digit phone number or the email from your invitation.",
         },
         400
       );
     }
 
     const otpEnabled = process.env.NEXT_PUBLIC_PHONE_OTP === "true";
-    const { guest: guestRow, error: guestError } = await findGuestByPhone(digits);
+    const { guest: guestRow, error: guestError } =
+      await findGuestByLogin(rawLogin);
 
     if (guestError) {
       return json({ error: guestError }, 500);
@@ -57,16 +74,19 @@ export async function POST(request: Request) {
       return json(
         {
           warning: true,
-          error:
-            "This phone number is not on the guest list. Use the number from your invitation.",
+          error: emailLogin
+            ? "This email is not on the guest list. Use the email from your invitation."
+            : "This phone number is not on the guest list. Use the number from your invitation.",
         },
         403
       );
     }
 
     const guest = mapGuest(guestRow);
+    const digits = normalizePhone(guest.phone || "");
+    const label = guestDisplayName(guest);
 
-    if (otpEnabled) {
+    if (otpEnabled && !emailLogin) {
       const anon = getSupabaseAnon();
       const e164 = toE164(digits);
 
@@ -80,7 +100,7 @@ export async function POST(request: Request) {
           return json({ error: verifyError.message, needsOtp: true }, 401);
         }
         await setGuestSession(guest);
-        return json({ guest, found: guest.name !== "Guest" });
+        return json({ guest, found: label !== "Guest" });
       }
 
       const { error: otpError } = await anon.auth.signInWithOtp({ phone: e164 });
@@ -94,7 +114,11 @@ export async function POST(request: Request) {
     }
 
     await setGuestSession(guest);
-    return json({ guest, found: guest.name !== "Guest" });
+    return json({
+      guest,
+      found: label !== "Guest",
+      login: emailLogin ? normalizeEmail(rawLogin) : digits,
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Login failed.";
     return json({ error: message }, 500);

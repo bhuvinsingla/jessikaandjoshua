@@ -5,7 +5,11 @@ create extension if not exists pgcrypto;
 
 create table if not exists public.guests (
   id uuid primary key default gen_random_uuid(),
-  phone text not null unique,
+  phone text unique,
+  email text,
+  first_name text not null default '',
+  last_name text not null default '',
+  addressee text not null default '',
   name text not null default 'Guest',
   tier text not null default 'both' check (tier in ('both', 'brunch', 'night')),
   created_at timestamptz not null default now(),
@@ -16,6 +20,8 @@ create table if not exists public.rsvps (
   id uuid primary key default gen_random_uuid(),
   guest_id uuid references public.guests(id) on delete set null,
   guest_phone text not null,
+  guest_first_name text not null default '',
+  guest_last_name text not null default '',
   guest_names text not null default '',
   brunch_attending text,
   brunch_kids text default '0',
@@ -30,6 +36,9 @@ create table if not exists public.rsvps (
 );
 
 create index if not exists guests_phone_idx on public.guests (phone);
+create unique index if not exists guests_email_unique_idx
+  on public.guests (lower(email))
+  where email is not null and email <> '';
 create index if not exists rsvps_guest_id_idx on public.rsvps (guest_id);
 
 create or replace function public.touch_updated_at()
@@ -58,11 +67,15 @@ alter table public.rsvps enable row level security;
 -- Public clients cannot read/write tables directly.
 -- Next.js API routes use the service role key (bypasses RLS).
 
-insert into public.guests (phone, name, tier)
+insert into public.guests (phone, email, first_name, last_name, addressee, name, tier)
 values
-  ('7135550101', 'Jane Doe', 'both'),
-  ('7135550102', 'Grandma Smith', 'brunch'),
-  ('7135550103', 'Alex Johnson', 'night')
+  ('7135550101', 'jane@example.com', 'Jane', 'Doe', 'The Doe Family', 'Jane Doe', 'both'),
+  ('7135550102', 'grandma@example.com', 'Grandma', 'Smith', 'The Smith Family', 'Grandma Smith', 'brunch'),
+  ('7135550103', 'alex@example.com', 'Alex', 'Johnson', 'The Johnson Family', 'Alex Johnson', 'night')
 on conflict (phone) do update
-set name = excluded.name,
-    tier = excluded.tier;
+set first_name = excluded.first_name,
+    last_name = excluded.last_name,
+    addressee = excluded.addressee,
+    name = excluded.name,
+    tier = excluded.tier,
+    email = excluded.email;

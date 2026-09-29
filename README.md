@@ -8,7 +8,8 @@ Next.js app with the original invitation UI, phone login, and live Supabase sync
 2. Project Settings → API: copy **Project URL**, **anon public** key, and **service_role** key.
 3. Paste those values in `.env`.
 4. SQL Editor → paste and run `supabase/schema.sql`.  
-   That creates `guests` and `rsvps` and seeds the three test numbers from the original page.
+   That creates `guests` and `rsvps` and seeds the three test guests from the original page.
+   If the project already has tables, run `supabase/migration_guest_fields.sql` once to add `email`, `first_name`, `last_name`, and `addressee`.
 
 ## 2. Deploy on Vercel
 
@@ -28,13 +29,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The landing page is the same as `index.html`. Unlock with:
+Open [http://localhost:3000](http://localhost:3000). The landing page is the same as `index.html`. Unlock with phone or email:
 
-- `(713) 555-0101` — both events (Jane Doe)
-- `(713) 555-0102` — brunch (Grandma Smith)
-- `(713) 555-0103` — night (Alex Johnson)
+- `(713) 555-0101` or `jane@example.com` — both events (Jane Doe)
+- `(713) 555-0102` or `grandma@example.com` — brunch (Grandma Smith)
+- `(713) 555-0103` or `alex@example.com` — night (Alex Johnson)
 
-Any other number stays on the landing page with a warning and is not added to `guests`.
+Any other number or email stays on the landing page with a warning and is not added to `guests`.
+
+If a guest already submitted an RSVP, the form is filled automatically and a banner shows that a previous response was found.
 
 ## 4. What syncs to Supabase
 

@@ -3,8 +3,25 @@ import { toast, type Id } from "react-toastify";
 type Guest = {
   id: string;
   name: string;
-  phone: string;
+  first_name?: string;
+  last_name?: string;
+  addressee?: string;
+  phone: string | null;
+  email?: string | null;
   tier: "both" | "brunch" | "night";
+};
+
+type RsvpRecord = {
+  guest_first_name?: string | null;
+  guest_last_name?: string | null;
+  guest_names?: string | null;
+  brunch_attending?: string | null;
+  brunch_kids?: string | null;
+  bar_attending?: string | null;
+  dietary?: string | null;
+  jukebox_track?: string | null;
+  jukebox_artist?: string | null;
+  spotify_url?: string | null;
 };
 
 type ItunesTrack = {
@@ -17,7 +34,7 @@ type ItunesTrack = {
 declare global {
   interface Window {
     showPage: (pageName: string) => void;
-    setGuestTier: (tier: Guest["tier"], guestName?: string) => void;
+    setGuestTier: (tier: Guest["tier"], guest?: Guest | string) => void;
     performGuestLookup: () => Promise<void>;
     quickSearch: (phoneNum: string) => void;
     selectSong: (
@@ -33,6 +50,66 @@ declare global {
 
 function normalizePhone(str: string) {
   return str ? str.replace(/\D/g, "") : "";
+}
+
+function guestLabel(guest: {
+  addressee?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  name?: string | null;
+}) {
+  const addressee = (guest.addressee || "").trim();
+  if (addressee) return addressee;
+  const full = `${guest.first_name || ""} ${guest.last_name || ""}`.trim();
+  if (full) return full;
+  return (guest.name || "").trim() || "Guest";
+}
+
+function fillGuestNameFields(guest: Guest) {
+  const firstInput = document.getElementById(
+    "rsvpFirstNameInput"
+  ) as HTMLInputElement | null;
+  const lastInput = document.getElementById(
+    "rsvpLastNameInput"
+  ) as HTMLInputElement | null;
+  const addresseeWrap = document.getElementById("rsvpAddresseeWrap");
+  const addresseeDisplay = document.getElementById("rsvpAddresseeDisplay");
+
+  if (firstInput) firstInput.value = guest.first_name || "";
+  if (lastInput) lastInput.value = guest.last_name || "";
+
+  const addressee = (guest.addressee || "").trim();
+  if (addressee && addresseeDisplay && addresseeWrap) {
+    addresseeDisplay.textContent = addressee;
+    addresseeWrap.classList.remove("hidden");
+  } else {
+    addresseeWrap?.classList.add("hidden");
+  }
+}
+
+function setRadioValue(name: string, value: string | null | undefined) {
+  if (!value) return;
+  const input = document.querySelector(
+    `input[name="${name}"][value="${value}"]`
+  ) as HTMLInputElement | null;
+  if (input) input.checked = true;
+}
+
+function setDietaryValues(dietary: string | null | undefined) {
+  const boxes = document.querySelectorAll(
+    '#rsvp input[type="checkbox"]'
+  ) as NodeListOf<HTMLInputElement>;
+  boxes.forEach((box) => {
+    box.checked = false;
+  });
+  if (!dietary || dietary === "None") return;
+  const selected = dietary.split(",").map((part) => part.trim().toLowerCase());
+  boxes.forEach((box) => {
+    const label = (box.value || box.parentElement?.innerText || "")
+      .trim()
+      .toLowerCase();
+    if (selected.includes(label)) box.checked = true;
+  });
 }
 
 function showToast(
@@ -61,6 +138,7 @@ function showToast(
 export function initWeddingSite() {
   const targetDate = new Date("January 30, 2027 11:00:00").getTime();
   let currentTier: Guest["tier"] = "both";
+  let pendingLogin = "";
   let pendingPhone = "";
   let searchDebounce: ReturnType<typeof setTimeout> | null = null;
   let activeAudioPreview: HTMLAudioElement | null = null;
@@ -80,6 +158,13 @@ export function initWeddingSite() {
       landing.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
       void fetch("/api/auth/login", { method: "DELETE" });
+      document
+        .getElementById("rsvpAlreadyFilledBanner")
+        ?.classList.add("hidden");
+      const submitBtn = document.querySelector(
+        '#rsvpForm button[type="submit"]'
+      ) as HTMLButtonElement | null;
+      if (submitBtn) submitBtn.textContent = "Submit RSVP Response";
       showToast("info", "Signed out.");
     }
   }
@@ -106,8 +191,13 @@ export function initWeddingSite() {
     set("seconds", seconds);
   }
 
-  function setGuestTier(tier: Guest["tier"], guestName?: string) {
+  function setGuestTier(tier: Guest["tier"], guest?: Guest | string) {
     currentTier = tier;
+    const guestObj =
+      typeof guest === "string" || !guest
+        ? ({ name: typeof guest === "string" ? guest : "Guest" } as Guest)
+        : guest;
+    const guestName = guestLabel(guestObj);
 
     const eventsGrid = document.getElementById("eventsGrid");
     const eventCardBrunch = document.getElementById("eventCardBrunch");
@@ -121,9 +211,6 @@ export function initWeddingSite() {
     const greetingDetail = document.getElementById("greetingDetail");
     const scheduleDesc = document.getElementById("scheduleDescription");
     const dresscodeSubtitle = document.getElementById("dresscodeSubtitle");
-    const rsvpGuestNamesInput = document.getElementById(
-      "rsvpGuestNamesInput"
-    ) as HTMLInputElement | null;
 
     ["Both", "Brunch", "Night", "Locked"].forEach((id) => {
       const btn = document.getElementById("tierBtn" + id);
@@ -142,8 +229,8 @@ export function initWeddingSite() {
         "px-2 py-1.5 rounded-lg border text-[10px] font-semibold transition bg-brand-plum border-brand-plum text-white shadow-sm";
     }
 
-    if (guestName && rsvpGuestNamesInput) {
-      rsvpGuestNamesInput.value = guestName;
+    if (guestObj.id || guestObj.first_name || guestObj.addressee || guestObj.name) {
+      fillGuestNameFields(guestObj);
     }
 
     if (tier === "brunch") {
@@ -212,6 +299,105 @@ export function initWeddingSite() {
     }
 
     showPage("invitation");
+    void loadExistingRsvp(guestObj.id ? guestObj : null);
+  }
+
+  function fillRsvpForm(rsvp: RsvpRecord, guest?: Guest | null) {
+    const firstInput = document.getElementById(
+      "rsvpFirstNameInput"
+    ) as HTMLInputElement | null;
+    const lastInput = document.getElementById(
+      "rsvpLastNameInput"
+    ) as HTMLInputElement | null;
+
+    if (firstInput) {
+      firstInput.value =
+        rsvp.guest_first_name ||
+        guest?.first_name ||
+        (rsvp.guest_names || "").split(" ")[0] ||
+        "";
+    }
+    if (lastInput) {
+      lastInput.value =
+        rsvp.guest_last_name ||
+        guest?.last_name ||
+        (rsvp.guest_names || "").split(" ").slice(1).join(" ") ||
+        "";
+    }
+
+    if (guest) fillGuestNameFields({
+      ...guest,
+      first_name: firstInput?.value || guest.first_name,
+      last_name: lastInput?.value || guest.last_name,
+    });
+
+    setRadioValue("brunchAttending", rsvp.brunch_attending || undefined);
+    setRadioValue("barAttending", rsvp.bar_attending || undefined);
+
+    const brunchKidsSelect = document.querySelector(
+      "#rsvpBrunchBlock select"
+    ) as HTMLSelectElement | null;
+    if (brunchKidsSelect && rsvp.brunch_kids != null) {
+      brunchKidsSelect.value = rsvp.brunch_kids;
+    }
+
+    setDietaryValues(rsvp.dietary);
+
+    if (rsvp.jukebox_track) {
+      const artwork = "https://placehold.co/100x100/3a152e/ffffff?text=🎵";
+      selectSong(
+        rsvp.jukebox_track,
+        rsvp.jukebox_artist || "",
+        artwork,
+        ""
+      );
+      if (rsvp.spotify_url) {
+        const selectedSongData = document.getElementById(
+          "selectedSongData"
+        ) as HTMLInputElement | null;
+        const spotifySearchLink = document.getElementById(
+          "spotifySearchLink"
+        ) as HTMLAnchorElement | null;
+        if (spotifySearchLink) spotifySearchLink.href = rsvp.spotify_url;
+        if (selectedSongData) {
+          selectedSongData.value = JSON.stringify({
+            track: rsvp.jukebox_track,
+            artist: rsvp.jukebox_artist || "",
+            spotifyUrl: rsvp.spotify_url,
+          });
+        }
+      }
+    }
+
+    const submitBtn = document.querySelector(
+      '#rsvpForm button[type="submit"]'
+    ) as HTMLButtonElement | null;
+    if (submitBtn) submitBtn.textContent = "Update RSVP Response";
+  }
+
+  async function loadExistingRsvp(guest?: Guest | null) {
+    const banner = document.getElementById("rsvpAlreadyFilledBanner");
+    try {
+      const res = await fetch("/api/rsvp");
+      const data = (await res.json()) as {
+        rsvp?: RsvpRecord | null;
+        previouslyFilled?: boolean;
+      };
+      if (!res.ok || !data.rsvp) {
+        banner?.classList.add("hidden");
+        if (guest) fillGuestNameFields(guest);
+        return;
+      }
+      fillRsvpForm(data.rsvp, guest);
+      banner?.classList.remove("hidden");
+      showToast(
+        "info",
+        "Your previous RSVP was found and filled in the form."
+      );
+    } catch {
+      banner?.classList.add("hidden");
+      if (guest) fillGuestNameFields(guest);
+    }
   }
 
   async function performGuestLookup() {
@@ -220,7 +406,10 @@ export function initWeddingSite() {
     ) as HTMLInputElement | null;
     const rawQuery = input?.value.trim() || "";
     if (!rawQuery) {
-      showToast("warning", "Enter the phone number from your invitation.");
+      showToast(
+        "warning",
+        "Enter the phone number or email from your invitation."
+      );
       return;
     }
 
@@ -229,16 +418,19 @@ export function initWeddingSite() {
     });
 
     const looksLikeOtp = /^\d{6}$/.test(rawQuery.replace(/\s/g, ""));
-    const phone = looksLikeOtp ? pendingPhone : normalizePhone(rawQuery);
+    const login = looksLikeOtp ? pendingLogin : rawQuery;
     const otp = looksLikeOtp ? rawQuery.replace(/\s/g, "") : undefined;
 
-    if (!looksLikeOtp) pendingPhone = phone;
+    if (!looksLikeOtp) {
+      pendingLogin = login;
+      pendingPhone = isEmail(login) ? "" : normalizePhone(login);
+    }
 
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: pendingPhone || phone, otp }),
+        body: JSON.stringify({ login: pendingLogin || login, otp }),
       });
       const data = await res.json();
 
@@ -261,18 +453,24 @@ export function initWeddingSite() {
         void fetch("/api/auth/login", { method: "DELETE" });
         showToast(
           data.warning ? "warning" : "error",
-          data.error || "This phone number is not on the guest list.",
+          data.error || "This guest is not on the guest list.",
           lookupToast
         );
         return;
       }
 
       const guest = data.guest as Guest;
-      if (input && pendingPhone) {
-        input.placeholder = "e.g. (713) 555-0101";
+      pendingPhone = guest.phone || pendingPhone;
+      pendingLogin = guest.email || guest.phone || pendingLogin;
+      if (input) {
+        input.placeholder = "Phone or email, e.g. (713) 555-0101";
       }
-      setGuestTier(guest.tier, guest.name);
-      showToast("success", `Welcome, ${guest.name}. You're signed in.`, lookupToast);
+      setGuestTier(guest.tier, guest);
+      showToast(
+        "success",
+        `Welcome, ${guestLabel(guest)}. You're signed in.`,
+        lookupToast
+      );
     } catch (error) {
       showToast(
         "error",
@@ -284,11 +482,11 @@ export function initWeddingSite() {
     }
   }
 
-  function quickSearch(phoneNum: string) {
+  function quickSearch(loginValue: string) {
     const input = document.getElementById(
       "guestSearchInput"
     ) as HTMLInputElement | null;
-    if (input) input.value = phoneNum;
+    if (input) input.value = loginValue;
     void performGuestLookup();
   }
 
@@ -483,9 +681,13 @@ export function initWeddingSite() {
     if (!rsvpForm) return;
     rsvpForm.classList.add("opacity-50", "pointer-events-none");
 
-    const guestNames =
-      (document.getElementById("rsvpGuestNamesInput") as HTMLInputElement)
+    const guestFirstName =
+      (document.getElementById("rsvpFirstNameInput") as HTMLInputElement)
         ?.value || "";
+    const guestLastName =
+      (document.getElementById("rsvpLastNameInput") as HTMLInputElement)
+        ?.value || "";
+    const guestNames = `${guestFirstName} ${guestLastName}`.trim();
     const guestPhone =
       (document.getElementById("guestSearchInput") as HTMLInputElement)
         ?.value || pendingPhone;
@@ -507,7 +709,10 @@ export function initWeddingSite() {
       )?.value || "";
     const dietaryChecked = Array.from(
       document.querySelectorAll('#rsvp input[type="checkbox"]:checked')
-    ).map((cb) => (cb.parentElement?.innerText || "").trim());
+    ).map((cb) => {
+      const input = cb as HTMLInputElement;
+      return (input.value || input.parentElement?.innerText || "").trim();
+    });
     const dietary = dietaryChecked.length > 0 ? dietaryChecked.join(", ") : "None";
 
     let jukeboxTrack = "";
@@ -528,6 +733,8 @@ export function initWeddingSite() {
     }
 
     const payload = {
+      guestFirstName,
+      guestLastName,
       guestNames,
       guestPhone,
       brunchAttending,
@@ -558,6 +765,13 @@ export function initWeddingSite() {
           return;
         }
         showToast("success", "RSVP received. We can't wait to celebrate with you.");
+        document
+          .getElementById("rsvpAlreadyFilledBanner")
+          ?.classList.remove("hidden");
+        const submitBtn = document.querySelector(
+          '#rsvpForm button[type="submit"]'
+        ) as HTMLButtonElement | null;
+        if (submitBtn) submitBtn.textContent = "Update RSVP Response";
       })
       .catch(() => {
         rsvpForm.classList.remove("opacity-50", "pointer-events-none");
@@ -570,11 +784,14 @@ export function initWeddingSite() {
     .then((res) => res.json())
     .then((data: { guest?: Guest | null }) => {
       if (data.guest) {
-        pendingPhone = data.guest.phone;
+        pendingPhone = data.guest.phone || "";
+        pendingLogin = data.guest.email || data.guest.phone || "";
         const input = document.getElementById(
           "guestSearchInput"
         ) as HTMLInputElement | null;
-        if (input && !input.value) input.value = data.guest.phone;
+        if (input && !input.value) {
+          input.value = data.guest.email || data.guest.phone || "";
+        }
       }
     })
     .catch(() => undefined);
