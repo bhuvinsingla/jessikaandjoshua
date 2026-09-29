@@ -396,7 +396,7 @@ export function initWeddingSite() {
       banner?.classList.remove("hidden");
       showToast(
         "info",
-        "Your previous RSVP was found and filled in the form."
+        "Your previous RSVP details were found."
       );
     } catch {
       banner?.classList.add("hidden");
